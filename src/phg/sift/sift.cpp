@@ -164,7 +164,7 @@ void phg::SIFT::buildPyramids(const cv::Mat &imgOrg, std::vector<cv::Mat> &gauss
         for (size_t layer = 0; layer < OCTAVE_GAUSSIAN_IMAGES; ++layer) {
             double sigmaCur = INITIAL_IMG_SIGMA * pow(2.0, octave) * pow(k, layer);
             if (DEBUG_ENABLE) cv::imwrite(DEBUG_PATH + "pyramid/o" + to_string(octave) + "_l" + to_string(layer) + "_s" + to_string(sigmaCur) + ".png", gaussianPyramid[octave * OCTAVE_GAUSSIAN_IMAGES + layer]);
-            // TODO: какие ожидания от картинок можно придумать? т.е. как дополнительно проверить что работает разумно?
+            // какие ожидания от картинок можно придумать? т.е. как дополнительно проверить что работает разумно?
             // спойлер: подуймайте с чем должна визуально совпадать картинка из октавы? может быть с какой-то из картинок с предыдущей октавы? с какой? как их визуально сверить ведь они разного размера?
         }
     }
@@ -194,13 +194,13 @@ void phg::SIFT::buildPyramids(const cv::Mat &imgOrg, std::vector<cv::Mat> &gauss
 
     // нам нужны padding-картинки по краям октавы чтобы извлекать экстремумы, но в статье предлагается не s+2 а s+3:
     // [lowe04] We must produce s + 3 images in the stack of blurred images for each octave, so that final extrema detection covers a complete octave
-    // TODO: почему OCTAVE_GAUSSIAN_IMAGES=(OCTAVE_NLAYERS + 3) а не например (OCTAVE_NLAYERS + 2)?
+    // почему OCTAVE_GAUSSIAN_IMAGES=(OCTAVE_NLAYERS + 3) а не например (OCTAVE_NLAYERS + 2)?
 
     for (size_t octave = 0; octave < NOCTAVES; ++octave) {
         for (size_t layer = 0; layer < OCTAVE_DOG_IMAGES; ++layer) {
             double sigmaCur = INITIAL_IMG_SIGMA * pow(2.0, octave) * pow(k, layer);
             if (DEBUG_ENABLE) cv::imwrite(DEBUG_PATH + "pyramidDoG/o" + to_string(octave) + "_l" + to_string(layer) + "_s" + to_string(sigmaCur) + ".png", DoGPyramid[octave * OCTAVE_DOG_IMAGES + layer]);
-            // TODO: какие ожидания от картинок можно придумать? т.е. как дополнительно проверить что работает разумно?
+            // какие ожидания от картинок можно придумать? т.е. как дополнительно проверить что работает разумно?
             // спойлер: подуймайте с чем должна визуально совпадать картинка из октавы DoG? может быть с какой-то из картинок с предыдущей октавы?
             // с какой? как их визуально сверить ведь они разного размера?
         }
@@ -302,9 +302,9 @@ void phg::SIFT::findLocalExtremasAndDescribe(const std::vector<cv::Mat> &gaussia
                         std::cerr << "subpixel shift - " << X << std::endl;
 //                        dvalue = -X[0];
 #endif
-                        // TODO сделать фильтрацию слабых точек по слабому контрасту
+                        // сделать фильтрацию слабых точек по слабому контрасту
                         float contrast = center + dvalue;
-                        if (contrast < contrast_threshold / OCTAVE_NLAYERS) // TODO почему порог контрастности должен уменьшаться при увеличении числа слоев в октаве?
+                        if (contrast < contrast_threshold / OCTAVE_NLAYERS) // почему порог контрастности должен уменьшаться при увеличении числа слоев в октаве?
                             continue;
 
                         kp.pt = cv::Point2f((i + 0.5 + dx) * octave_downscale, (j + 0.5 + dy) * octave_downscale);
@@ -438,14 +438,14 @@ bool phg::SIFT::buildDescriptor(const cv::Mat &img, float px, float py, double d
 
                             double magnitude = calcMagnitude(img, x, y);
                             double orientation = calcOrientation(img, x, y);
-                            // TODO за счет чего этот вклад будет сравниваться с этим же вкладом даже если эта картинка будет повернута?
+                            // за счет чего этот вклад будет сравниваться с этим же вкладом даже если эта картинка будет повернута?
                             // что нужно сделать с ориентацией каждого градиента из окрестности этой ключевой точки?
                             rassert(orientation >= 0.0 && orientation < 360.0, 3515215125412);
                             static_assert(360 % DESCRIPTOR_NBINS == 0, "Inappropriate bins number!");
                             size_t bin =  static_cast<size_t>(floor(orientation * DESCRIPTOR_NBINS / 360));
                             rassert(bin < DESCRIPTOR_NBINS, 361236315613);
                             sum[bin] += magnitude;
-                            // TODO хорошая идея добавить трилинейную интерполяцию как предложено в статье, или хотя бы сэмулировать ее - сгладить получившиеся гистограммы
+                            // хорошая идея добавить трилинейную интерполяцию как предложено в статье, или хотя бы сэмулировать ее - сгладить получившиеся гистограммы
                         }
                     }
                 }
