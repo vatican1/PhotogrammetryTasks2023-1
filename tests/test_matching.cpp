@@ -20,7 +20,7 @@
 
 // TODO enable both toggles for testing custom detector & matcher
 #define ENABLE_MY_DESCRIPTOR 0
-#define ENABLE_MY_MATCHING 0
+#define ENABLE_MY_MATCHING 1
 #define ENABLE_GPU_BRUTEFORCE_MATCHER 0
 
 #if ENABLE_MY_MATCHING
@@ -358,23 +358,24 @@ namespace {
         for (int i = 0; i < (int) knn_matches_flann.size(); ++i) {
             good_matches_nn[i] = knn_matches_flann[i][0];
         }
-        drawMatches(img1, img2, keypoints1, keypoints2, good_matches_nn, "data/debug/test_matching/" + getTestSuiteName() + "_" + getTestName() + "_" + "00_matches_nn.png");
+        std::string test_name = "data/debug/test_matching/" + getTestSuiteName() + "_" + getTestName() + "_";
+        drawMatches(img1, img2, keypoints1, keypoints2, good_matches_nn, test_name + "00_matches_nn.png");
 
         #if ENABLE_MY_MATCHING
         std::cout << "filtering matches by ratio test..." << std::endl;
         std::vector<DMatch> good_matches_ratio;
         phg::DescriptorMatcher::filterMatchesRatioTest(knn_matches_flann, good_matches_ratio);
-        drawMatches(img1, img2, keypoints1, keypoints2, good_matches_ratio, "data/debug/test_matching/" + getTestSuiteName() + "_" + getTestName() + "_" + "01_matches_ratio.png");
+        drawMatches(img1, img2, keypoints1, keypoints2, good_matches_ratio, test_name + "01_matches_ratio.png");
 
         std::cout << "filtering matches by clusters..." << std::endl;
         std::vector<DMatch> good_matches_clusters_only;
         phg::DescriptorMatcher::filterMatchesClusters(good_matches_nn, keypoints1, keypoints2, good_matches_clusters_only);
-        drawMatches(img1, img2, keypoints1, keypoints2, good_matches_clusters_only, "data/debug/test_matching/" + getTestSuiteName() + "_" + getTestName() + "_" + "03_matches_clusters_only.png");
+        drawMatches(img1, img2, keypoints1, keypoints2, good_matches_clusters_only, test_name + "03_matches_clusters_only.png");
 
         std::cout << "filtering matches by ratio & clusters" << std::endl;
         std::vector<DMatch> good_matches_clusters_and_ratio;
         phg::DescriptorMatcher::filterMatchesClusters(good_matches_ratio, keypoints1, keypoints2, good_matches_clusters_and_ratio);
-        drawMatches(img1, img2, keypoints1, keypoints2, good_matches_clusters_and_ratio, "data/debug/test_matching/" + getTestSuiteName() + "_" + getTestName() + "_" + "04_matches_clusters_and_ratio.png");
+        drawMatches(img1, img2, keypoints1, keypoints2, good_matches_clusters_and_ratio, test_name + "04_matches_clusters_and_ratio.png");
         #else
         std::vector<DMatch> good_matches_clusters_and_ratio;
         phg::filterMatchesGMS(good_matches_nn, keypoints1, keypoints2, img1.size(), img2.size(), good_matches_clusters_and_ratio);
