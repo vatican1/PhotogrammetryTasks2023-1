@@ -1,7 +1,6 @@
 #!/bin/bash
 
-sudo apt update
-sudo apt install libgoogle-glog-dev libgflags-dev libatlas-base-dev libeigen3-dev libsuitesparse-dev
+sudo apt install libunwind-dev libgoogle-glog-dev libgflags-dev libatlas-base-dev libeigen3-dev libsuitesparse-dev
 wget https://github.com/ceres-solver/ceres-solver/archive/2.0.0.zip
 unzip 2.0.0.zip
 cd ceres-solver-2.0.0
