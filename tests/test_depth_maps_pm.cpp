@@ -59,7 +59,7 @@ TEST (test_depth_maps_pm, AllDepthMaps) {
 
     size_t ndepth_maps = 0;
 
-    for (size_t from = 0; from + to_shift < full_dataset.ncameras; ++from) {
+    for (size_t from = 0; from + to_shift <= full_dataset.ncameras; ++from) {
         size_t to = from + to_shift;
 
         Dataset dataset = full_dataset.subset(from, to);
