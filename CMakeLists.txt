@@ -24,7 +24,8 @@ find_package(OpenCV 4.5.1 REQUIRED)
 # mkdir build
 # cd build
 # cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_LIST=features2d,highgui,flann,calib3d -DWITH_OPENEXR=ON -DBUILD_EXAMPLES=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/opt/opencv451  ..
-# make -j12
+# njobs=`lscpu -p | egrep -v '^#' | sort -u -t, -k 2,4 | wc -l` # https://stackoverflow.com/a/23378780
+# make -j{njobs} # njobs - число потоков которое будет использоваться для компиляции (по числу ядер)
 # sudo make install
 # укажите для CMake путь к OpenCV:
 # в CLion это делается через File->Settings->Build, Execution, Deployment->CMake->CMake options: -DOpenCV_DIR=/opt/opencv451/lib/cmake/opencv4
@@ -56,8 +57,9 @@ find_package(Ceres 2.0.0 REQUIRED)
 # cd ceres-solver-2.0.0
 # mkdir build
 # cd build
-# cmake -DCMAKE_INSTALL_PREFIX=/opt/ceres-solver200 ..
-# make -j3 # если у вас больше ядер ЦПУ - можно вставить большее число чтобы быстрее скомпилировалось
+# cmake -DCMAKE_INSTALL_PREFIX=/opt/ceres-solver200 -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF ..
+# njobs=`lscpu -p | egrep -v '^#' | sort -u -t, -k 2,4 | wc -l` # https://stackoverflow.com/a/23378780
+# make -j{njobs} # njobs - число потоков которое будет использоваться для компиляции (по числу ядер)
 # make test
 # sudo make install
 # указать для CMake путь к ceres-solver (в дополнение к OpenCV и Eigen3):
