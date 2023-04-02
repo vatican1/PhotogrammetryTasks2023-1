@@ -58,6 +58,14 @@ namespace phg {
                 cv::Mat &depth_map, cv::Mat &normal_map, cv::Mat &cost_map,
                 float depth_min, float depth_max);
 
+        matrix34d getCameraPtoWorld(unsigned int camera_key) { rassert(camera_key < ncameras, 23172890061); return cameras_PtoWorld[camera_key]; }
+
+        // эта функция берет только те "хорошие" (с учетом значения cost_map) точки карты глубины
+        // и преобразует их в результат - облако точек с цветами и нормалями (теми что были определены в финальных гипотезах пикселей)
+        static void buildGoodPoints(const cv::Mat &depth_map, const cv::Mat &normal_map, const cv::Mat &cost_map, const cv::Mat &img,
+                                    const phg::Calibration &calibration, const matrix34d &PtoWorld,
+                                    std::vector<cv::Vec3d> &points, std::vector<cv::Vec3b> &colors, std::vector<cv::Vec3d> &normals);
+
     protected:
 
         void refinement();

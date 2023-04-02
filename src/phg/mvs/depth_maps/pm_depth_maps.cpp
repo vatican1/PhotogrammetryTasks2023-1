@@ -487,4 +487,34 @@ namespace phg {
         exportPointCloud(point_cloud_good, DEBUG_DIR + label + "_good_rgb.ply", point_cloud_good_bgr, point_cloud_good_normal);
         exportPointCloud(point_cloud_good, DEBUG_DIR + label + "_good_costs.ply", point_cloud_good_cost, point_cloud_good_normal);
     }
+
+    void PMDepthMapsBuilder::buildGoodPoints(const cv::Mat &depth_map, const cv::Mat &normal_map, const cv::Mat &cost_map, const cv::Mat &img,
+                                             const phg::Calibration &calibration, const matrix34d &PtoWorld,
+                                             std::vector<cv::Vec3d> &points, std::vector<cv::Vec3b> &colors, std::vector<cv::Vec3d> &normals)
+    {
+        ptrdiff_t width = calibration.width();
+        ptrdiff_t height = calibration.height();
+
+        for (ptrdiff_t j = 0; j < height; ++j) {
+            for (ptrdiff_t i = 0; i < width; ++i) {
+                float depth = depth_map.at<float>(j, i);
+                float cost = cost_map.at<float>(j, i);
+                vector3d normal = normal_map.at<vector3f>(j, i);
+
+                if (depth == NO_DEPTH || cost == NO_COST)
+                    continue;
+
+                cv::Vec3d p = unproject(vector3d(i + 0.5, j + 0.5, depth), calibration, PtoWorld);
+                cv::Vec3b bgr = img.at<cv::Vec3b>(j, i);
+
+                if (cost > GOOD_COST)
+                    continue;
+
+                points.push_back(p);
+                colors.push_back(bgr);
+                normals.push_back(normal);
+            }
+        }
+    }
+
 }
