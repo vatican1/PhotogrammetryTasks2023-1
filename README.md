@@ -34,7 +34,7 @@
  
 4. Отправить **Pull-request** с названием```Task05 <Имя> <Фамилия> <Аффиляция>```:
 
- - Скопируйте в описание [шаблон](https://raw.githubusercontent.com/PhotogrammetryCourse/PhotogrammetryTasks2021/task05/.github/pull_request_template.md)
+ - Скопируйте в описание [шаблон](https://raw.githubusercontent.com/PhotogrammetryCourse/PhotogrammetryTasks2023/task05/.github/pull_request_template.md)
  - Обязательно отправляйте PR из вашей ветки **task05** (вашего форка) в ветку **task05** (основного репозитория)
  - Перечислите свои мысли по вопросам поднятым в коде и просто появившиеся в процессе выполнения задания
  - Создайте PR
