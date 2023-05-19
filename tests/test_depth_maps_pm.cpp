@@ -30,7 +30,7 @@
 //#define DATASET_DIR                  "herzjesu25"
 //#define DATASET_DOWNSCALE            8
 
-#define DEPTH_MAP_AND_POINT_CLOUD
+//#define DEPTH_MAP_AND_POINT_CLOUD
 //________________________________________________________________________________
 
 TEST (test_depth_maps_pm, SingleDepthMap) {
